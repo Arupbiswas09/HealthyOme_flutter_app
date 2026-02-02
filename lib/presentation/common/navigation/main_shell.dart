@@ -16,6 +16,7 @@ class MainShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
       body: child,
       bottomNavigationBar: const _BottomNavBar(),
     );
@@ -39,46 +40,55 @@ class _BottomNavBar extends StatelessWidget {
         ],
       ),
       child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.md,
-            vertical: AppSpacing.sm,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _NavItem(
-                icon: Icons.home_outlined,
-                activeIcon: Icons.home,
-                label: 'Home',
-                path: AppRoutes.homePath,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.md,
+                vertical: AppSpacing.sm,
               ),
-              _NavItem(
-                icon: Icons.restaurant_menu_outlined,
-                activeIcon: Icons.restaurant_menu,
-                label: 'Menu',
-                path: AppRoutes.menuPath,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: const [
+                  _NavItem(
+                    icon: Icons.home_outlined,
+                    activeIcon: Icons.home,
+                    label: 'Home',
+                    path: AppRoutes.homePath,
+                  ),
+                  _NavItem(
+                    icon: Icons.restaurant_menu_outlined,
+                    activeIcon: Icons.restaurant_menu,
+                    label: 'Menu',
+                    path: AppRoutes.menuPath,
+                  ),
+                  _NavItem(
+                    icon: Icons.receipt_long_outlined,
+                    activeIcon: Icons.receipt_long,
+                    label: 'Orders',
+                    path: AppRoutes.ordersPath,
+                  ),
+                  _NavItem(
+                    icon: Icons.person_outline,
+                    activeIcon: Icons.person,
+                    label: 'Profile',
+                    path: AppRoutes.profilePath,
+                  ),
+                ],
               ),
-              _NavItem(
-                icon: Icons.repeat_outlined,
-                activeIcon: Icons.repeat,
-                label: 'Subscribe',
-                path: AppRoutes.subscriptionPath,
+            ),
+            // Home indicator bar - matches web app design
+            Container(
+              width: 134,
+              height: 5,
+              margin: const EdgeInsets.only(bottom: AppSpacing.sm),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(AppSpacing.radiusFull),
               ),
-              _NavItem(
-                icon: Icons.receipt_long_outlined,
-                activeIcon: Icons.receipt_long,
-                label: 'Orders',
-                path: AppRoutes.ordersPath,
-              ),
-              _NavItem(
-                icon: Icons.person_outline,
-                activeIcon: Icons.person,
-                label: 'Profile',
-                path: AppRoutes.profilePath,
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

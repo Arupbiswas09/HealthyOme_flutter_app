@@ -54,7 +54,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen>
             ),
             Container(
               margin: AppSpacing.screenPadding,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColors.surfaceVariant,
                 borderRadius: AppSpacing.borderRadiusFull,
               ),
@@ -95,7 +95,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen>
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.error_outline, size: 48, color: AppColors.error),
+                        const Icon(Icons.error_outline, size: 48, color: AppColors.error),
                         const SizedBox(height: AppSpacing.md),
                         Text(
                           e.toString().replaceFirst('ApiException: ', ''),
@@ -133,7 +133,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.receipt_long_outlined, size: 64, color: AppColors.textTertiary),
+            const Icon(Icons.receipt_long_outlined, size: 64, color: AppColors.textTertiary),
             const SizedBox(height: AppSpacing.md),
             Text(
               'No orders yet',

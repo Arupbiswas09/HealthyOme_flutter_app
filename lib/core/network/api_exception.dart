@@ -13,8 +13,8 @@ sealed class ApiException implements Exception {
 /// No internet connection
 class NetworkException extends ApiException {
   const NetworkException([
-    String message = 'No internet connection. Please check your network.',
-  ]) : super(message);
+    super.message = 'No internet connection. Please check your network.',
+  ]);
 }
 
 /// Server returned an error
@@ -25,8 +25,8 @@ class ServerException extends ApiException {
 /// Request timeout
 class TimeoutException extends ApiException {
   const TimeoutException([
-    String message = 'Request timed out. Please try again.',
-  ]) : super(message);
+    super.message = 'Request timed out. Please try again.',
+  ]);
 }
 
 /// Unauthorized - Session expired or invalid token
@@ -92,20 +92,20 @@ class RateLimitException extends ApiException {
 /// Unknown/unexpected error
 class UnknownException extends ApiException {
   const UnknownException([
-    String message = 'An unexpected error occurred. Please try again.',
-  ]) : super(message);
+    super.message = 'An unexpected error occurred. Please try again.',
+  ]);
 }
 
 /// Cache exception
 class CacheException extends ApiException {
   const CacheException([
-    String message = 'Failed to load cached data.',
-  ]) : super(message);
+    super.message = 'Failed to load cached data.',
+  ]);
 }
 
 /// Parse exception - Failed to parse response
 class ParseException extends ApiException {
   const ParseException([
-    String message = 'Failed to parse server response.',
-  ]) : super(message);
+    super.message = 'Failed to parse server response.',
+  ]);
 }

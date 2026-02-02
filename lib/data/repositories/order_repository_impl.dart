@@ -16,6 +16,8 @@ class OrderRepositoryImpl implements OrderRepository {
       final models = await _remote.getOrders();
       return Right(models.map((m) => m.toEntity()).toList());
     } on ApiException catch (e) {
+      // 404 = orders endpoint not yet on backend; show empty list
+      if (e is NotFoundException) return const Right([]);
       return Left(e);
     }
   }
@@ -59,7 +61,7 @@ class OrderRepositoryImpl implements OrderRepository {
     String? paymentMethod,
     String? specialInstructions,
   }) async {
-    return Left(const ServerException('Create order API not implemented', 501));
+    return const Left(ServerException('Create order API not implemented', 501));
   }
 
   @override
@@ -73,7 +75,7 @@ class OrderRepositoryImpl implements OrderRepository {
 
   @override
   Future<Either<ApiException, Order>> reorder(String orderId) async {
-    return Left(const ServerException('Reorder API not implemented', 501));
+    return const Left(ServerException('Reorder API not implemented', 501));
   }
 
   @override

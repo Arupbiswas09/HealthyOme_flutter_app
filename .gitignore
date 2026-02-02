@@ -46,3 +46,5 @@ app.*.map.json
 
 # Markdown (keep locally, do not track)
 *.md
+*.md
+.github/

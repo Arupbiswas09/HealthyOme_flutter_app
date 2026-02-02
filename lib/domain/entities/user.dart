@@ -27,6 +27,13 @@ class UserProfile extends Equatable {
     this.preferences = const UserPreferences(),
   });
 
+  /// Guest profile when /user/profile/ returns 404 (endpoint not yet available)
+  static UserProfile get guest => const UserProfile(
+        id: 0,
+        name: 'Guest',
+        phone: '',
+      );
+
   /// Get default address
   DeliveryAddress? get defaultAddress {
     try {

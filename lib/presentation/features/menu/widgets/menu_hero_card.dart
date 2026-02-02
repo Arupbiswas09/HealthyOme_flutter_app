@@ -17,15 +17,15 @@ class MenuHeroCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.only(bottom: AppSpacing.lg),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           borderRadius: AppSpacing.borderRadiusLg,
           // Green gradient logic from visual description
-          gradient: const LinearGradient(
+          gradient: LinearGradient(
             colors: [Color(0xFFE8F5E9), Color(0xFFC8E6C9)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
-          boxShadow: const [
+          boxShadow: [
              BoxShadow(
                color: AppColors.shadowLight,
                blurRadius: 10,
@@ -45,7 +45,7 @@ class MenuHeroCard extends StatelessWidget {
                       horizontal: AppSpacing.sm,
                       vertical: 4,
                     ),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: AppColors.primary,
                       borderRadius: AppSpacing.borderRadiusFull,
                     ),
@@ -93,7 +93,7 @@ class MenuHeroCard extends StatelessWidget {
                       borderRadius: AppSpacing.borderRadiusSm,
                       border: Border.all(color: AppColors.primary.withOpacity(0.2)),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Customize >',
                       style: TextStyle(
                         fontSize: 12,

@@ -21,7 +21,7 @@ class PeriodSelector extends StatelessWidget {
       padding: AppSpacing.screenPadding,
       child: Container(
         padding: const EdgeInsets.all(4),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: AppColors.surfaceVariant,
           borderRadius: AppSpacing.borderRadiusFull,
         ),
@@ -64,7 +64,7 @@ class PeriodSelector extends StatelessWidget {
                             horizontal: 6,
                             vertical: 2,
                           ),
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: AppColors.warningLight,
                             borderRadius: AppSpacing.borderRadiusFull,
                           ),

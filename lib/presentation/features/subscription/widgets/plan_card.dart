@@ -122,7 +122,7 @@ class PlanCard extends StatelessWidget {
                             horizontal: AppSpacing.sm,
                             vertical: 4,
                           ),
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: AppColors.successLight,
                             borderRadius: AppSpacing.borderRadiusFull,
                           ),
@@ -197,7 +197,7 @@ class PlanCard extends StatelessWidget {
                             horizontal: AppSpacing.lg,
                             vertical: AppSpacing.sm,
                           ),
-                          shape: RoundedRectangleBorder(
+                          shape: const RoundedRectangleBorder(
                             borderRadius: AppSpacing.borderRadiusMd,
                           ),
                         ),

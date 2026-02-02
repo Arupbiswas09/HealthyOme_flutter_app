@@ -113,7 +113,7 @@ class OrderCard extends StatelessWidget {
             // Date and time
             Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.calendar_today,
                   size: 14,
                   color: AppColors.textSecondary,
@@ -127,7 +127,7 @@ class OrderCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: AppSpacing.md),
-                Icon(
+                const Icon(
                   Icons.access_time,
                   size: 14,
                   color: AppColors.textSecondary,

@@ -26,45 +26,52 @@ class FeatureCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 160,
+        height: 156, // Fixed height matching design
         decoration: BoxDecoration(
           gradient: gradient,
-          borderRadius: AppSpacing.borderRadiusLg,
-          border: Border.all(color: AppColors.border),
+          borderRadius: BorderRadius.circular(20),
+          // Subtle shadow for depth
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.03),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
         child: Stack(
           children: [
+            // Text Content on the Left
             Padding(
-              padding: const EdgeInsets.all(AppSpacing.md),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                   if (badgeText != null)
+                  if (badgeText != null)
                     Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.sm,
+                        horizontal: 10,
                         vertical: 4,
                       ),
-                      margin: const EdgeInsets.only(bottom: AppSpacing.sm),
+                      margin: const EdgeInsets.only(bottom: 12),
                       decoration: BoxDecoration(
-                        color: AppColors.primaryLight,
-                        borderRadius: AppSpacing.borderRadiusFull,
+                        color: Colors.white.withOpacity(0.8),
+                        borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
                         badgeText!,
                         style: const TextStyle(
                           fontSize: 10,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 0.1,
-                          color: AppColors.primary,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.5,
+                          color: Color(0xFF2E7D32), // Dark green text for badge
                         ),
                       ),
                     ),
                   
-                  // Text Content Limited Width
                   SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.55,
+                    width: MediaQuery.of(context).size.width * 0.5,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -72,25 +79,23 @@ class FeatureCard extends StatelessWidget {
                           title,
                           style: const TextStyle(
                             fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            height: 1.2,
+                            fontWeight: FontWeight.w700,
+                            height: 1.1,
                             letterSpacing: -0.5,
-                            color: AppColors.textPrimary,
+                            color: Color(0xFF1A1A1A),
                           ),
                           maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 6),
                         Text(
                           subtitle,
-                          style: const TextStyle(
-                            fontSize: 14,
+                          style: TextStyle(
+                            fontSize: 13,
                             fontWeight: FontWeight.w400,
-                            height: 1.4,
-                            color: AppColors.textSecondary,
+                            height: 1.3,
+                            color: const Color(0xFF1A1A1A).withOpacity(0.7),
                           ),
                           maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
@@ -99,18 +104,24 @@ class FeatureCard extends StatelessWidget {
               ),
             ),
             
-            // Image positioned to right
+            // Image on the Right
             Positioned(
-              right: -10,
-              bottom: -10,
-              child: Image.asset(
-                imagePath,
-                height: 140,
-                width: 160,
-                fit: BoxFit.contain,
-                errorBuilder: (context, error, stackTrace) {
-                  return const SizedBox(width: 100, height: 100);
-                },
+              right: 0,
+              bottom: 0,
+              top: 10, // Slight top padding
+              width: 150, // Fixed width for image container
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  bottomRight: Radius.circular(20),
+                ),
+                child: Image.asset(
+                  imagePath,
+                  fit: BoxFit.contain,
+                  alignment: Alignment.bottomRight,
+                  errorBuilder: (context, error, stackTrace) {
+                    return const SizedBox();
+                  },
+                ),
               ),
             ),
           ],

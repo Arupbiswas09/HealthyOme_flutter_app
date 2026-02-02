@@ -81,6 +81,8 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/images/figma/
+    - assets/images/figma/new_home/
 
 #   fonts:
 #     - family: Inter

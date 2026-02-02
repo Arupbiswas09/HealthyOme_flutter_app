@@ -120,7 +120,7 @@ class CartScreen extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          // TODO: Navigate to checkout
+                          context.push('/checkout');
                         },
                         child: const Text('Proceed to Checkout'),
                       ),
@@ -139,7 +139,7 @@ class CartScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
+          const Icon(
             Icons.shopping_cart_outlined,
             size: 80,
             color: AppColors.textTertiary,
@@ -196,13 +196,13 @@ class _CartItemCard extends StatelessWidget {
           Container(
             width: 60,
             height: 60,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: AppColors.surfaceVariant,
               borderRadius: AppSpacing.borderRadiusSm,
             ),
             child: Stack(
               children: [
-                Center(
+                const Center(
                   child: Icon(
                     Icons.restaurant,
                     color: AppColors.textTertiary,
@@ -213,7 +213,7 @@ class _CartItemCard extends StatelessWidget {
                   left: 4,
                   child: Container(
                     padding: const EdgeInsets.all(2),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: AppColors.surface,
                       borderRadius: AppSpacing.borderRadiusXs,
                     ),

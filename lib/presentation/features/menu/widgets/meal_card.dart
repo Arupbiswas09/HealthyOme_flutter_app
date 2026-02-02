@@ -47,9 +47,9 @@ class MealCard extends StatelessWidget {
                 Container(
                   height: 100,
                   width: double.infinity,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: AppColors.surfaceVariant,
-                    borderRadius: const BorderRadius.vertical(
+                    borderRadius: BorderRadius.vertical(
                       top: Radius.circular(AppSpacing.radiusLg),
                     ),
                   ),
@@ -145,7 +145,7 @@ class MealCard extends StatelessWidget {
                         const SizedBox(height: 4),
                         Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.local_fire_department,
                               size: 12,
                               color: AppColors.warning,
@@ -178,7 +178,7 @@ class MealCard extends StatelessWidget {
                           onTap: onAdd,
                           child: Container(
                             padding: const EdgeInsets.all(6),
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: AppColors.primary,
                               borderRadius: AppSpacing.borderRadiusSm,
                             ),
@@ -202,7 +202,7 @@ class MealCard extends StatelessWidget {
   }
 
   Widget _buildPlaceholder() {
-    return Center(
+    return const Center(
       child: Icon(
         Icons.restaurant,
         size: 36,

@@ -5,7 +5,6 @@ import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_typography.dart';
 import '../../../../app/theme/app_spacing.dart';
 import '../../../../app/routes/app_routes.dart';
-import '../../../../core/constants/asset_constants.dart';
 import '../viewmodel/home_viewmodel.dart';
 import '../widgets/hero_section.dart';
 import '../widgets/promo_carousel.dart';
@@ -14,7 +13,7 @@ import '../widgets/featured_meal_card.dart';
 import '../widgets/consult_card.dart';
 import '../widgets/feature_card.dart';
 
-/// Home Screen - Main dashboard. Featured meals from API via HomeViewModel.
+/// Home Screen - Main dashboard matching web app design exactly
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
@@ -33,33 +32,32 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final homeState = ref.watch(homeViewModelProvider);
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Combined Hero + Overlapping Promo Section
+            // Hero Section with Overlapping Promo Carousel
             Stack(
-              alignment: Alignment.topCenter,
+              clipBehavior: Clip.none,
               children: [
-                // 1. Dark Green Hero Background (with extra bottom space for overlap)
-                const Padding(
-                  padding: EdgeInsets.only(bottom: 40.0), // Space for overhang
-                  child: HeroSection(),
-                ),
+                // Hero Section (Dark Green Background)
+                const HeroSection(),
                 
-                // 2. Overlapping Promo Carousel
-                const Positioned(
-                  bottom: 0,
+                // Overlapping Promo Carousel (positioned at bottom of hero)
+                Positioned(
+                  bottom: -40, // Overlap by 40px
                   left: 0,
                   right: 0,
-                  child: PromoCarousel(),
+                  child: const PromoCarousel(),
                 ),
               ],
             ),
 
-            const SizedBox(height: AppSpacing.lg),
+            const SizedBox(height: 60), // Space for overlapping promo
 
             // Subscription Feature Card
             Padding(
@@ -68,8 +66,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 badgeText: 'BEST VALUE',
                 title: 'Subscription Meals',
                 subtitle: 'Long-term habit builder',
-                gradient: AppColors.primaryGradient,
-                imagePath: AssetConstants.subscriptionImg,
+                gradient: const LinearGradient(
+                  colors: [Color(0xFFE8F5E9), Color(0xFFC8E6C9)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                imagePath: 'assets/images/subscription-img.webp',
                 onTap: () => context.push(AppRoutes.subscriptionPath),
               ),
             ),
@@ -82,8 +84,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: FeatureCard(
                 title: 'Quick Meals',
                 subtitle: 'Instant healthy delivery',
-                gradient: AppColors.secondaryGradient,
-                imagePath: AssetConstants.quickMealImg,
+                gradient: const LinearGradient(
+                  colors: [Color(0xFFFFF9C4), Color(0xFFFFF59D)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                imagePath: 'assets/images/quick-meal2.webp',
                 onTap: () => context.push(AppRoutes.menuPath),
               ),
             ),
@@ -100,132 +106,116 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ),
 
-            const SizedBox(height: AppSpacing.xl),
+            const SizedBox(height: AppSpacing.lg),
 
             // Categories Section
             Padding(
               padding: AppSpacing.screenPadding,
-              child: Text(
-                'Categories',
-                style: AppTypography.headline3,
-              ),
+              child: Text('Categories', style: AppTypography.headline3),
             ),
-
             const SizedBox(height: AppSpacing.md),
-
             const CategoryCarousel(),
 
-            const SizedBox(height: AppSpacing.xl),
+            const SizedBox(height: AppSpacing.lg),
 
-            // Featured Meals Section (from API via ViewModel)
+            // Featured Meals Section
             Padding(
               padding: AppSpacing.screenPadding,
-              child: Text(
-                'Featured Meal',
-                style: AppTypography.headline3,
-              ),
+              child: Text('Featured Meal', style: AppTypography.headline3),
             ),
-
             const SizedBox(height: AppSpacing.md),
 
-            _FeaturedMealsRow(),
+            // Featured Meals Grid
+            homeState.featuredMeals.when(
+              loading: () => const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(AppSpacing.xl),
+                  child: CircularProgressIndicator(color: AppColors.primary),
+                ),
+              ),
+              error: (err, _) => Center(
+                child: Padding(
+                  padding: AppSpacing.screenPadding,
+                  child: Column(
+                    children: [
+                      const Icon(Icons.error_outline, size: 48, color: AppColors.error),
+                      const SizedBox(height: AppSpacing.md),
+                      Text(
+                        'Failed to load featured meals',
+                        style: AppTypography.bodyMedium,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: AppSpacing.md),
+                      TextButton.icon(
+                        onPressed: () => ref.read(homeViewModelProvider.notifier).loadFeaturedMeals(),
+                        icon: const Icon(Icons.refresh),
+                        label: const Text('Retry'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              data: (meals) {
+                if (meals.isEmpty) {
+                  return const SizedBox.shrink();
+                }
+                return Padding(
+                  padding: AppSpacing.screenPadding,
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.75,
+                      crossAxisSpacing: AppSpacing.md,
+                      mainAxisSpacing: AppSpacing.md,
+                    ),
+                    itemCount: meals.length > 4 ? 4 : meals.length,
+                    itemBuilder: (context, index) {
+                      final meal = meals[index];
+                      return FeaturedMealCard(
+                        title: meal.name,
+                        category: meal.category?.name ?? 'Meal',
+                        calories: '${meal.calories ?? 0} kcal',
+                        price: '₹${meal.price.toStringAsFixed(0)}',
+                        isVeg: meal.isVeg,
+                        imagePath: meal.imageUrl,
+                        onTap: () {
+                          // TODO: Navigate to meal detail
+                        },
+                        onAdd: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('${meal.name} added to cart!'),
+                              duration: const Duration(seconds: 1),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
 
-            const SizedBox(height: AppSpacing.xl),
+            const SizedBox(height: AppSpacing.lg),
 
-            // Footer message
+            // Bottom Text
             Padding(
               padding: AppSpacing.screenPadding,
               child: Text(
-                'Serving select areas to keep meals fresh and healthy 🌱',
-                style: AppTypography.headline1.copyWith(
-                  color: AppColors.textDisabled,
-                  fontSize: 20,
+                'Serving select areas to keep meals fresh and healthy 🥗',
+                style: AppTypography.bodySmall.copyWith(
+                  color: AppColors.textTertiary,
                 ),
+                textAlign: TextAlign.center,
               ),
             ),
 
-            // Bottom padding for navbar
-            const SizedBox(height: AppSpacing.bottomNavHeight + AppSpacing.lg),
+            // Bottom padding for nav bar
+            const SizedBox(height: AppSpacing.bottomNavHeight + AppSpacing.md),
           ],
         ),
-      ),
-    );
-  }
-}
-
-/// Featured meals row - watches HomeViewModel, shows loading/error/data.
-class _FeaturedMealsRow extends ConsumerWidget {
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final homeState = ref.watch(homeViewModelProvider);
-
-    return Padding(
-      padding: AppSpacing.screenPadding,
-      child: homeState.featuredMeals.when(
-        loading: () => const SizedBox(
-          height: 140,
-          child: Center(
-            child: CircularProgressIndicator(color: AppColors.primary),
-          ),
-        ),
-        error: (_, __) => const SizedBox(
-          height: 80,
-          child: Center(
-            child: Text(
-              'Could not load featured meals',
-              style: TextStyle(color: AppColors.textSecondary),
-            ),
-          ),
-        ),
-        data: (meals) {
-          if (meals.isEmpty) {
-            return const SizedBox(height: 80);
-          }
-          final firstTwo = meals.take(2).toList();
-          return Row(
-            children: [
-              if (firstTwo.isNotEmpty)
-                Expanded(
-                  child: FeaturedMealCard(
-                    title: firstTwo[0].name,
-                    category: firstTwo[0].category?.name ?? 'All',
-                    calories: '${firstTwo[0].calories ?? 0} kcal',
-                    price: '₹${firstTwo[0].price.toStringAsFixed(0)}',
-                    isVeg: firstTwo[0].isVeg,
-                    onTap: () => context.push(AppRoutes.menuPath),
-                    onAdd: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('${firstTwo[0].name} added to cart!'),
-                          duration: const Duration(seconds: 1),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              if (firstTwo.length > 1) const SizedBox(width: AppSpacing.md),
-              if (firstTwo.length > 1)
-                Expanded(
-                  child: FeaturedMealCard(
-                    title: firstTwo[1].name,
-                    category: firstTwo[1].category?.name ?? 'All',
-                    calories: '${firstTwo[1].calories ?? 0} kcal',
-                    price: '₹${firstTwo[1].price.toStringAsFixed(0)}',
-                    isVeg: firstTwo[1].isVeg,
-                    onTap: () => context.push(AppRoutes.menuPath),
-                    onAdd: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('${firstTwo[1].name} added to cart!'),
-                          duration: const Duration(seconds: 1),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-            ],
-          );
-        },
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../../../app/theme/app_colors.dart';
 import '../../../../app/theme/app_spacing.dart';
@@ -44,9 +45,10 @@ class FeaturedMealCard extends StatelessWidget {
               children: [
                 Container(
                   height: 100,
-                  decoration: BoxDecoration(
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
                     color: AppColors.surfaceVariant,
-                    borderRadius: const BorderRadius.vertical(
+                    borderRadius: BorderRadius.vertical(
                       top: Radius.circular(AppSpacing.radiusLg),
                     ),
                   ),
@@ -55,11 +57,12 @@ class FeaturedMealCard extends StatelessWidget {
                           borderRadius: const BorderRadius.vertical(
                             top: Radius.circular(AppSpacing.radiusLg),
                           ),
-                          child: Image.asset(
-                            imagePath!,
+                          child: CachedNetworkImage(
+                            imageUrl: imagePath!,
                             fit: BoxFit.cover,
                             width: double.infinity,
-                            errorBuilder: (_, __, ___) => _buildPlaceholder(),
+                            placeholder: (context, url) => _buildShimmer(),
+                            errorWidget: (context, url, error) => _buildPlaceholder(),
                           ),
                         )
                       : _buildPlaceholder(),
@@ -70,7 +73,7 @@ class FeaturedMealCard extends StatelessWidget {
                   left: AppSpacing.sm,
                   child: Container(
                     padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: AppColors.surface,
                       borderRadius: AppSpacing.borderRadiusXs,
                     ),
@@ -84,73 +87,80 @@ class FeaturedMealCard extends StatelessWidget {
               ],
             ),
             // Content
-            Padding(
-              padding: const EdgeInsets.all(AppSpacing.sm),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(AppSpacing.sm),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textPrimary,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          maxLines: 1,
+                        ),
+                        const SizedBox(height: 4),
+                        Row(
+                          children: [
+                            Text(
+                              category,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                            const SizedBox(width: AppSpacing.xs),
+                            const Text('•', style: TextStyle(color: AppColors.textTertiary)),
+                            const SizedBox(width: AppSpacing.xs),
+                            Text(
+                              calories,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Text(
-                        category,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                      const SizedBox(width: AppSpacing.xs),
-                      const Text('•', style: TextStyle(color: AppColors.textTertiary)),
-                      const SizedBox(width: AppSpacing.xs),
-                      Text(
-                        calories,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: AppSpacing.sm),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        price,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.primary,
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: onAdd,
-                        child: Container(
-                          padding: const EdgeInsets.all(6),
-                          decoration: BoxDecoration(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          price,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
                             color: AppColors.primary,
-                            borderRadius: AppSpacing.borderRadiusSm,
-                          ),
-                          child: const Icon(
-                            Icons.add,
-                            color: Colors.white,
-                            size: 18,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                        GestureDetector(
+                          onTap: onAdd,
+                          child: Container(
+                            padding: const EdgeInsets.all(6),
+                            decoration: const BoxDecoration(
+                              color: AppColors.primary,
+                              borderRadius: AppSpacing.borderRadiusSm,
+                            ),
+                            child: const Icon(
+                              Icons.add,
+                              color: Colors.white,
+                              size: 18,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -160,12 +170,18 @@ class FeaturedMealCard extends StatelessWidget {
   }
 
   Widget _buildPlaceholder() {
-    return Center(
+    return const Center(
       child: Icon(
-        Icons.fastfood,
+        Icons.restaurant,
         size: 40,
         color: AppColors.textTertiary,
       ),
+    );
+  }
+
+  Widget _buildShimmer() {
+    return Container(
+      color: Colors.grey[200],
     );
   }
 }

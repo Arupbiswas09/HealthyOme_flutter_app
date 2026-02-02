@@ -16,7 +16,7 @@ class AppTheme {
       fontFamily: AppTypography.fontFamily,
 
       // Colors
-      colorScheme: ColorScheme.light(
+      colorScheme: const ColorScheme.light(
         primary: AppColors.primary,
         primaryContainer: AppColors.primaryLight,
         secondary: AppColors.secondary,
@@ -64,12 +64,12 @@ class AppTheme {
       ),
 
       // Card Theme
-      cardTheme: CardThemeData(
+      cardTheme: const CardThemeData(
         elevation: 0,
         color: AppColors.surface,
         shape: RoundedRectangleBorder(
           borderRadius: AppSpacing.borderRadiusLg,
-          side: const BorderSide(color: AppColors.border),
+          side: BorderSide(color: AppColors.border),
         ),
         margin: EdgeInsets.zero,
       ),
@@ -81,7 +81,7 @@ class AppTheme {
           foregroundColor: AppColors.textOnPrimary,
           elevation: 0,
           padding: AppSpacing.buttonPadding,
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
             borderRadius: AppSpacing.borderRadiusMd,
           ),
           textStyle: AppTypography.buttonMedium,
@@ -105,7 +105,7 @@ class AppTheme {
           foregroundColor: AppColors.primary,
           padding: AppSpacing.buttonPadding,
           side: const BorderSide(color: AppColors.primary),
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
             borderRadius: AppSpacing.borderRadiusMd,
           ),
           textStyle: AppTypography.buttonMedium.copyWith(
@@ -122,25 +122,25 @@ class AppTheme {
           horizontal: AppSpacing.md,
           vertical: AppSpacing.md,
         ),
-        border: OutlineInputBorder(
+        border: const OutlineInputBorder(
           borderRadius: AppSpacing.borderRadiusMd,
-          borderSide: const BorderSide(color: AppColors.border),
+          borderSide: BorderSide(color: AppColors.border),
         ),
-        enabledBorder: OutlineInputBorder(
+        enabledBorder: const OutlineInputBorder(
           borderRadius: AppSpacing.borderRadiusMd,
-          borderSide: const BorderSide(color: AppColors.border),
+          borderSide: BorderSide(color: AppColors.border),
         ),
-        focusedBorder: OutlineInputBorder(
+        focusedBorder: const OutlineInputBorder(
           borderRadius: AppSpacing.borderRadiusMd,
-          borderSide: const BorderSide(color: AppColors.primary, width: 2),
+          borderSide: BorderSide(color: AppColors.primary, width: 2),
         ),
-        errorBorder: OutlineInputBorder(
+        errorBorder: const OutlineInputBorder(
           borderRadius: AppSpacing.borderRadiusMd,
-          borderSide: const BorderSide(color: AppColors.error),
+          borderSide: BorderSide(color: AppColors.error),
         ),
-        focusedErrorBorder: OutlineInputBorder(
+        focusedErrorBorder: const OutlineInputBorder(
           borderRadius: AppSpacing.borderRadiusMd,
-          borderSide: const BorderSide(color: AppColors.error, width: 2),
+          borderSide: BorderSide(color: AppColors.error, width: 2),
         ),
         hintStyle: AppTypography.bodyMedium.copyWith(
           color: AppColors.textTertiary,
@@ -160,7 +160,7 @@ class AppTheme {
           horizontal: AppSpacing.sm,
           vertical: AppSpacing.xs,
         ),
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: AppSpacing.borderRadiusFull,
         ),
       ),
@@ -195,7 +195,7 @@ class AppTheme {
       // Dialog Theme
       dialogTheme: DialogThemeData(
         backgroundColor: AppColors.surface,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: AppSpacing.borderRadiusLg,
         ),
         titleTextStyle: AppTypography.headline3,
@@ -209,7 +209,7 @@ class AppTheme {
         contentTextStyle: AppTypography.bodyMedium.copyWith(
           color: AppColors.textOnPrimary,
         ),
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: AppSpacing.borderRadiusSm,
         ),
       ),
@@ -246,7 +246,7 @@ class AppTheme {
         }),
         checkColor: WidgetStateProperty.all(AppColors.textOnPrimary),
         side: const BorderSide(color: AppColors.border, width: 2),
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: AppSpacing.borderRadiusXs,
         ),
       ),

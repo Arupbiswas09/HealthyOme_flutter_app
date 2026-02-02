@@ -1,0 +1,28 @@
+Run Healthy-O-Me on iOS Simulator
+=================================
+
+QUICK RUN
+---------
+1. Start simulator:  open -a Simulator
+   Or:  flutter emulators --launch apple_ios_simulator
+2. Run app:  flutter run -d "iPhone"
+   Or:  ./run_ios.sh
+
+IF "CodeSign failed with a nonzero exit code"
+---------------------------------------------
+The project has no Development Team set. Do this once:
+
+1. Open the iOS project in Xcode:
+   open ios/Runner.xcworkspace
+
+2. In Xcode:
+   - Click "Runner" in the left sidebar (the blue project icon).
+   - Select the "Runner" target (under TARGETS).
+   - Open the "Signing & Capabilities" tab.
+   - Check "Automatically manage signing".
+   - In "Team", choose your Apple ID team (or click "Add an Account..." and sign in with your Apple ID).
+
+3. Close Xcode and run again:
+   flutter run -d "iPhone"
+
+The app will then build and run on the iOS Simulator. You do not need a paid Apple Developer account for the simulator.

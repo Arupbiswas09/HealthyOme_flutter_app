@@ -1,85 +1,95 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../app/theme/app_colors.dart';
-import '../../../../app/theme/app_spacing.dart';
+import '../../../../app/theme/app_typography.dart';
 
-/// Category carousel for home screen
+/// Category carousel matching web app design
 class CategoryCarousel extends StatelessWidget {
   const CategoryCarousel({super.key});
 
+  static const _categories = [
+    {'name': 'Smoothie', 'icon': 'assets/images/figma/new_home/cat_smoothie.svg'},
+    {'name': 'Soup', 'icon': 'assets/images/figma/new_home/cat_soup.svg'},
+    {'name': 'Salads', 'icon': 'assets/images/figma/new_home/cat_salads.svg'},
+    {'name': 'Meals', 'icon': 'assets/images/figma/new_home/cat_meals.svg'},
+    {'name': 'Meals', 'icon': 'assets/images/figma/new_home/cat_meals_2.svg'},
+  ];
+
   @override
   Widget build(BuildContext context) {
-    final categories = [
-      _Category(name: 'Salads', icon: Icons.eco, color: AppColors.primary),
-      _Category(name: 'Bowls', icon: Icons.soup_kitchen, color: AppColors.secondary),
-      _Category(name: 'Protein', icon: Icons.fitness_center, color: AppColors.error),
-      _Category(name: 'Wraps', icon: Icons.breakfast_dining, color: AppColors.info),
-      _Category(name: 'Smoothies', icon: Icons.local_drink, color: Colors.purple),
-    ];
-
     return SizedBox(
       height: 100,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        padding: AppSpacing.screenPadding,
-        itemCount: categories.length,
-        separatorBuilder: (_, __) => const SizedBox(width: AppSpacing.md),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        itemCount: _categories.length,
+        separatorBuilder: (_, __) => const SizedBox(width: 16),
         itemBuilder: (context, index) {
-          final category = categories[index];
-          return _CategoryItem(category: category);
+          final category = _categories[index];
+          return _CategoryItem(
+            name: category['name']!,
+            iconPath: category['icon']!,
+          );
         },
       ),
     );
   }
 }
 
-class _Category {
-  final String name;
-  final IconData icon;
-  final Color color;
-
-  _Category({
-    required this.name,
-    required this.icon,
-    required this.color,
-  });
-}
-
 class _CategoryItem extends StatelessWidget {
-  final _Category category;
+  final String name;
+  final String iconPath;
 
-  const _CategoryItem({required this.category});
+  const _CategoryItem({
+    required this.name,
+    required this.iconPath,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // TODO: Navigate to filtered menu
+        // TODO: Navigate to category
       },
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 64,
-            height: 64,
+            width: 56,
+            height: 56,
             decoration: BoxDecoration(
-              color: category.color.withOpacity(0.1),
-              borderRadius: AppSpacing.borderRadiusLg,
-              border: Border.all(
-                color: category.color.withOpacity(0.2),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            padding: const EdgeInsets.all(8),
+            child: SvgPicture.asset(
+              iconPath,
+              fit: BoxFit.contain,
+              placeholderBuilder: (context) => const Icon(
+                Icons.restaurant,
+                color: AppColors.primary,
               ),
             ),
-            child: Icon(
-              category.icon,
-              color: category.color,
-              size: 28,
-            ),
           ),
-          const SizedBox(height: AppSpacing.sm),
-          Text(
-            category.name,
-            style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-              color: AppColors.textPrimary,
+          const SizedBox(height: 8),
+          SizedBox(
+            width: 74,
+            child: Text(
+              name,
+              style: AppTypography.bodySmall.copyWith(
+                fontWeight: FontWeight.w500,
+                color: AppColors.textPrimary,
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],

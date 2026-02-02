@@ -1,0 +1,62 @@
+Run Healthy-O-Me on Android emulator (avoid "Lost connection to device")
+================================================================================
+
+WHY "LOST CONNECTION TO DEVICE" HAPPENS
+---------------------------------------
+The message usually appears when the "flutter run" process is stopped, not because
+the emulator crashed. Common causes:
+- Running from an IDE/script that kills the process after a timeout
+- Closing the terminal where "flutter run" was started
+- ADB connection dropping (emulator sleep, USB debugging glitch)
+
+HOW TO FIX / AVOID IT
+---------------------
+1. Run from your own terminal and keep it open:
+
+   ./run_android.sh
+
+   Or manually:
+   - Start emulator:  flutter emulators --launch Pixel_9_Pro
+   - After it boots:  flutter run -d emulator-5554
+   - Do not close that terminal; use r (hot reload) and q (quit) there.
+
+2. Restart ADB if the emulator is already open but connection is flaky:
+
+   adb kill-server && adb start-server
+   flutter run -d emulator-5554
+
+3. If the emulator is slow or unstable, wipe its data:
+   Android Studio → Device Manager → Pixel 9 Pro → Wipe Data
+
+4. For a one-off run without an interactive session (app stays on device):
+   flutter run -d emulator-5554 --no-pub
+   (Then close the terminal when the app has launched; the app keeps running.)
+
+"Failed host lookup: 'dev.healthyome.com'" (DioError)
+-----------------------------------------------------
+The emulator could not resolve the API host. Fix one of:
+
+- Ensure emulator has internet: open Chrome in the emulator and load a website.
+- If the API runs on your Mac, use the host machine IP from the emulator:
+  flutter run -d emulator-5554 --dart-define=API_BASE_URL=http://10.0.2.2:8000/api/shop
+  (Replace 8000 with your API port.)
+- Use a reachable API base URL:
+  flutter run -d emulator-5554 --dart-define=API_BASE_URL=https://your-server.com/api/shop
+
+"Software caused connection abort" / connectionError (API on 10.0.2.2:8000)
+---------------------------------------------------------------------------
+The emulator reached your Mac but the connection to port 8000 was closed. Fix:
+
+1. API must be running on your Mac on port 8000 (e.g. python manage.py runserver 0.0.0.0:8000).
+2. Server must listen on 0.0.0.0 (not 127.0.0.1) so the emulator can connect:
+   - Django: runserver 0.0.0.0:8000
+   - Node/Express: app.listen(8000, '0.0.0.0')
+   - Flask: app.run(host='0.0.0.0', port=8000)
+3. On Mac, allow incoming connections: System Settings → Network → Firewall (allow your dev server or turn off for testing).
+4. Quick check from Mac: curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:8000/api/shop/meals/featured/
+   If that fails, the API is not running or not on 8000.
+
+"Error connecting to the service" / DevTools
+--------------------------------------------
+This is the VM service (hot reload) connection failing. The app still runs; you just
+may not get hot reload. Restart the run or ignore if the app works.

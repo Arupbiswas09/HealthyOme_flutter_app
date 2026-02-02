@@ -52,11 +52,20 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: AppSpacing.screenPadding.copyWith(top: AppSpacing.md, bottom: AppSpacing.sm),
+              padding: AppSpacing.screenPadding.copyWith(top: AppSpacing.sm, bottom: AppSpacing.sm),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Subscription Plans', style: AppTypography.headline1),
+                  // Back button since this is a full-screen route
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
+                    onPressed: () => context.pop(),
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                  ),
+                  const SizedBox(width: AppSpacing.sm),
+                  Expanded(
+                    child: Text('Subscription Plans', style: AppTypography.headline1),
+                  ),
                   TextButton(
                     onPressed: () => context.push('${AppRoutes.subscriptionPath}/active'),
                     child: const Text('My Plans'),
@@ -87,7 +96,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.error_outline, size: 48, color: AppColors.error),
+                        const Icon(Icons.error_outline, size: 48, color: AppColors.error),
                         const SizedBox(height: AppSpacing.md),
                         Text(e.toString().replaceFirst('ApiException: ', ''), textAlign: TextAlign.center),
                         const SizedBox(height: AppSpacing.md),
@@ -118,7 +127,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen> {
                       return PlanCard(
                         name: plan.mealPlanType.name,
                         description: plan.mealPlanType.description ?? 'Healthy meals',
-                        images: [AssetConstants.placeholder],
+                        images: const [AssetConstants.placeholder],
                         price: plan.price,
                         originalPrice: plan.originalPrice ?? plan.price,
                         duration: '${plan.period.days} Days',

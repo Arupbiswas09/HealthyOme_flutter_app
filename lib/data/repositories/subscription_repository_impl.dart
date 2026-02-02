@@ -70,7 +70,7 @@ class SubscriptionRepositoryImpl implements SubscriptionRepository {
   }) async {
     try {
       await _remote.getSubscriptionById(planId);
-      return Left(const ServerException('Subscribe API not implemented', 501));
+      return const Left(ServerException('Subscribe API not implemented', 501));
     } on ApiException catch (e) {
       return Left(e);
     }
@@ -78,16 +78,16 @@ class SubscriptionRepositoryImpl implements SubscriptionRepository {
 
   @override
   Future<Either<ApiException, ActiveSubscription>> pauseSubscription(int subscriptionId) async {
-    return Left(const ServerException('Pause API not implemented', 501));
+    return const Left(ServerException('Pause API not implemented', 501));
   }
 
   @override
   Future<Either<ApiException, ActiveSubscription>> resumeSubscription(int subscriptionId) async {
-    return Left(const ServerException('Resume API not implemented', 501));
+    return const Left(ServerException('Resume API not implemented', 501));
   }
 
   @override
   Future<Either<ApiException, bool>> cancelSubscription(int subscriptionId) async {
-    return Left(const ServerException('Cancel subscription API not implemented', 501));
+    return const Left(ServerException('Cancel subscription API not implemented', 501));
   }
 }

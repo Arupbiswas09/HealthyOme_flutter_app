@@ -4,23 +4,26 @@ import 'app_routes.dart';
 import '../../presentation/features/home/view/home_screen.dart';
 import '../../presentation/features/menu/view/menu_screen.dart';
 import '../../presentation/features/subscription/view/subscription_screen.dart';
+import '../../presentation/features/subscription/view/active_subscriptions_screen.dart';
 import '../../presentation/features/orders/view/orders_screen.dart';
+import '../../presentation/features/orders/view/order_detail_screen.dart';
 import '../../presentation/features/profile/view/profile_screen.dart';
 import '../../presentation/features/cart/view/cart_screen.dart';
 import '../../presentation/features/bowl_builder/view/bowl_builder_screen.dart';
+import '../../presentation/features/checkout/view/checkout_screen.dart';
 import '../../presentation/features/rewards/view/rewards_screen.dart';
 import '../../presentation/common/navigation/main_shell.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>();
 
-/// GoRouter configuration
+/// GoRouter configuration - matches web app navigation structure
 final GoRouter appRouter = GoRouter(
   navigatorKey: _rootNavigatorKey,
   initialLocation: AppRoutes.homePath,
   debugLogDiagnostics: true,
   routes: [
-    // Shell route for bottom navigation
+    // Shell route for bottom navigation (Home, Menu, Orders, Profile)
     ShellRoute(
       navigatorKey: _shellNavigatorKey,
       builder: (context, state, child) => MainShell(child: child),
@@ -41,28 +44,6 @@ final GoRouter appRouter = GoRouter(
             child: MenuScreen(),
           ),
         ),
-        // Subscription
-        GoRoute(
-          path: AppRoutes.subscriptionPath,
-          name: AppRoutes.subscription,
-          pageBuilder: (context, state) => const NoTransitionPage(
-            child: SubscriptionScreen(),
-          ),
-          routes: [
-            GoRoute(
-              path: 'detail/:planId',
-              name: AppRoutes.subscriptionDetail,
-              builder: (context, state) {
-                return SubscriptionScreen(); // TODO: Replace with SubscriptionDetailScreen(planId: state.pathParameters['planId']!)
-              },
-            ),
-            GoRoute(
-              path: 'active',
-              name: AppRoutes.activeSubscriptions,
-              builder: (context, state) => const SubscriptionScreen(), // TODO: Replace with ActiveSubscriptionsScreen
-            ),
-          ],
-        ),
         // Orders
         GoRoute(
           path: AppRoutes.ordersPath,
@@ -75,7 +56,8 @@ final GoRouter appRouter = GoRouter(
               path: ':orderId',
               name: AppRoutes.orderDetail,
               builder: (context, state) {
-                return OrdersScreen(); // TODO: Replace with OrderDetailScreen(orderId: state.pathParameters['orderId']!)
+                final orderId = state.pathParameters['orderId']!;
+                return OrderDetailScreen(orderId: orderId);
               },
             ),
           ],
@@ -107,31 +89,66 @@ final GoRouter appRouter = GoRouter(
         ),
       ],
     ),
-    // Non-shell routes (full screen)
+    
+    // Non-shell routes (full screen without bottom nav - matches web app)
+    
+    // Subscription - full screen like web app
+    GoRoute(
+      path: AppRoutes.subscriptionPath,
+      name: AppRoutes.subscription,
+      parentNavigatorKey: _rootNavigatorKey,
+      builder: (context, state) => const SubscriptionScreen(),
+      routes: [
+        GoRoute(
+          path: 'detail/:planId',
+          name: AppRoutes.subscriptionDetail,
+          parentNavigatorKey: _rootNavigatorKey,
+          builder: (context, state) {
+            // TODO: Create SubscriptionDetailScreen
+            return const SubscriptionScreen();
+          },
+        ),
+        GoRoute(
+          path: 'active',
+          name: AppRoutes.activeSubscriptions,
+          parentNavigatorKey: _rootNavigatorKey,
+          builder: (context, state) => const ActiveSubscriptionsScreen(),
+        ),
+      ],
+    ),
+    
+    // Bowl Builder
     GoRoute(
       path: AppRoutes.bowlBuilderPath,
       name: AppRoutes.bowlBuilder,
       parentNavigatorKey: _rootNavigatorKey,
       builder: (context, state) => const BowlBuilderScreen(),
     ),
+    
+    // Cart
     GoRoute(
       path: AppRoutes.cartPath,
       name: AppRoutes.cart,
       parentNavigatorKey: _rootNavigatorKey,
       builder: (context, state) => const CartScreen(),
     ),
+    
+    // Checkout
     GoRoute(
       path: AppRoutes.checkoutPath,
       name: AppRoutes.checkout,
       parentNavigatorKey: _rootNavigatorKey,
-      builder: (context, state) => const CartScreen(), // TODO: Replace with CheckoutScreen
+      builder: (context, state) => const CheckoutScreen(),
     ),
+    
+    // Rewards
     GoRoute(
       path: AppRoutes.rewardsPath,
       name: AppRoutes.rewards,
       parentNavigatorKey: _rootNavigatorKey,
       builder: (context, state) => const RewardsScreen(),
     ),
+    
     // Auth routes
     GoRoute(
       path: AppRoutes.loginPath,

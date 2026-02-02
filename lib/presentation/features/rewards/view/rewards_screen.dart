@@ -45,7 +45,7 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.error_outline, size: 48, color: AppColors.error),
+                const Icon(Icons.error_outline, size: 48, color: AppColors.error),
                 const SizedBox(height: AppSpacing.md),
                 Text(e.toString().replaceFirst('ApiException: ', ''), textAlign: TextAlign.center),
                 const SizedBox(height: AppSpacing.md),
@@ -66,7 +66,7 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(AppSpacing.lg),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   gradient: AppColors.primaryGradient,
                   borderRadius: AppSpacing.borderRadiusLg,
                 ),
@@ -109,7 +109,7 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
                         Container(
                           width: 48,
                           height: 48,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: AppColors.secondaryLight,
                             borderRadius: AppSpacing.borderRadiusSm,
                           ),
@@ -121,13 +121,13 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(r.name, style: const TextStyle(fontWeight: FontWeight.w600)),
-                              Text(r.description, style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+                              Text(r.description, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
                             ],
                           ),
                         ),
                         Column(
                           children: [
-                            Text('${r.pointsRequired} pts', style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.primary)),
+                            Text('${r.pointsRequired} pts', style: const TextStyle(fontWeight: FontWeight.w600, color: AppColors.primary)),
                             const SizedBox(height: 4),
                             TextButton(
                               onPressed: () => ScaffoldMessenger.of(context).showSnackBar(

@@ -36,7 +36,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.person_off_outlined, size: 48, color: AppColors.textTertiary),
+                const Icon(Icons.person_off_outlined, size: 48, color: AppColors.textTertiary),
                 const SizedBox(height: AppSpacing.md),
                 Text('Not logged in or session expired', style: AppTypography.bodyMedium),
                 const SizedBox(height: AppSpacing.md),
@@ -55,6 +55,32 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if (profile.id == 0)
+                  Padding(
+                    padding: AppSpacing.screenPadding.copyWith(top: AppSpacing.md),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.md,
+                        vertical: AppSpacing.sm,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryLight,
+                        borderRadius: AppSpacing.borderRadiusMd,
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.info_outline, color: AppColors.primary, size: 20),
+                          const SizedBox(width: AppSpacing.sm),
+                          Expanded(
+                            child: Text(
+                              'Sign in to see your full profile',
+                              style: AppTypography.bodyMedium.copyWith(color: AppColors.primary),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 Padding(
                   padding: AppSpacing.screenPadding.copyWith(
                     top: AppSpacing.md,
@@ -122,7 +148,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         onTap: () => context.push(AppRoutes.rewardsPath),
                       ),
                       const SizedBox(width: AppSpacing.md),
-                      _StatCard(
+                      const _StatCard(
                         icon: Icons.repeat,
                         value: '0',
                         label: 'Active Plans',
@@ -376,7 +402,7 @@ class _MenuItem extends StatelessWidget {
       leading: Container(
         width: 40,
         height: 40,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: AppColors.surfaceVariant,
           borderRadius: AppSpacing.borderRadiusSm,
         ),

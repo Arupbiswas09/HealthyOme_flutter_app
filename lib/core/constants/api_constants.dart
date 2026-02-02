@@ -2,8 +2,11 @@
 class ApiConstants {
   ApiConstants._();
 
-  // Base URL
-  static const String baseUrl = 'https://dev.healthyome.com/api/shop';
+  /// Django backend API (same as web app). Override: --dart-define=API_BASE_URL=...
+  static const String baseUrl = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: 'https://dev.healthyome.com/api/shop',
+  );
   
   // Timeouts
   static const int connectTimeout = 30000; // 30 seconds

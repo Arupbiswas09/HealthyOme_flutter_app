@@ -43,7 +43,7 @@ class AuthRepositoryImpl implements AuthRepository {
     required String phoneNumber,
     String? email,
   }) async {
-    return Left(const ServerException('Register API not implemented', 501));
+    return const Left(ServerException('Register API not implemented', 501));
   }
 
   @override
@@ -62,33 +62,35 @@ class AuthRepositoryImpl implements AuthRepository {
       final profile = await _remote.getProfile();
       return Right(profile.toEntity());
     } on ApiException catch (e) {
+      // 404 = profile endpoint not yet on backend; show guest profile
+      if (e is NotFoundException) return Right(UserProfile.guest);
       return Left(e);
     }
   }
 
   @override
   Future<Either<ApiException, UserProfile>> updateProfile(UserProfile profile) async {
-    return Left(const ServerException('Update profile API not implemented', 501));
+    return const Left(ServerException('Update profile API not implemented', 501));
   }
 
   @override
   Future<Either<ApiException, DeliveryAddress>> addAddress(DeliveryAddress address) async {
-    return Left(const ServerException('Add address API not implemented', 501));
+    return const Left(ServerException('Add address API not implemented', 501));
   }
 
   @override
   Future<Either<ApiException, DeliveryAddress>> updateAddress(DeliveryAddress address) async {
-    return Left(const ServerException('Update address API not implemented', 501));
+    return const Left(ServerException('Update address API not implemented', 501));
   }
 
   @override
   Future<Either<ApiException, bool>> deleteAddress(int addressId) async {
-    return Left(const ServerException('Delete address API not implemented', 501));
+    return const Left(ServerException('Delete address API not implemented', 501));
   }
 
   @override
   Future<Either<ApiException, bool>> setDefaultAddress(int addressId) async {
-    return Left(const ServerException('Set default address API not implemented', 501));
+    return const Left(ServerException('Set default address API not implemented', 501));
   }
 
   @override
@@ -110,6 +112,6 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<ApiException, bool>> refreshToken() async {
-    return Left(const ServerException('Refresh token API not implemented', 501));
+    return const Left(ServerException('Refresh token API not implemented', 501));
   }
 }
